@@ -520,26 +520,33 @@ class Ui_MainWindow(object):
                 if rappel_precision[j]:
                     val+=1
                 j-=1
-            precision = (val/(i+1))*100
-            rappel = (val/self.sortie)*100
+            precision = val/(i+1)
+            rappel = val/self.sortie
             rappels.append(rappel)
             precisions.append(precision)
-            average_precision = sum(precisions) / len(precisions)
-            average_precisions.append(average_precision)
+            # average_precision = sum(precisions) / len(precisions)
+            # average_precisions.append(average_precision)
+            
+        precisions = np.asarray(precisions)
+        rappels = np.asarray(rappels)
+        average_precision = np.trapz(precisions, x=rappels)  
 
-        mean_average_precision = sum(average_precisions) / len(average_precisions)
         #Création de la courbe R/P
         plt.plot(rappels,precisions)
-        plt.plot(rappels, average_precisions, 'g--', label='average precision')
+        # plt.plot(rappels, average_precisions, 'g--', label='average precision')
         plt.xlabel("Recall")
         plt.ylabel("Precision")
         plt.title("R/P"+str(self.sortie)+" voisins de l'image n°"+num_image)
-        plt.axhline(y=mean_average_precision, color='r', linestyle='-')
 
 
-        print("Max Recall", max(rappels))
-        print("Max Precision", max(precisions))
-        print("mean_average_precision", mean_average_precision)
+        val = np.cumsum(rappel_precision)
+        precision = val / np.arange(1, self.sortie+1)
+        rappel = val / self.sortie
+
+        # Print the precision and recall
+        print("Precision:", precision)
+        print("Recall:", rappel)
+        print("average_precision", average_precision)
 
         
         #Enregistrement de la courbe RP
