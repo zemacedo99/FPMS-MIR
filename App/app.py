@@ -1,8 +1,8 @@
 from flask import Flask, request, make_response, render_template
-import keras
+# import keras
 import numpy as np
-from keras.applications.resnet50 import ResNet50, preprocess_input, decode_predictions
-from keras.preprocessing.image import load_img, img_to_array
+# from keras.applications.resnet50 import ResNet50, preprocess_input, decode_predictions
+# from keras.preprocessing.image import load_img, img_to_array
 import os
 from PIL import Image
 
@@ -11,6 +11,11 @@ app = Flask(__name__)
 #set paths to upload folder
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 app.config['IMAGE_UPLOADS'] = os.path.join(APP_ROOT, 'static')
+
+@app.route("/",methods=["GET","POST"])
+def hello():
+    return render_template('upload.html')
+
 
 @app.route("/image-classifier",methods=["GET","POST"])
 def classify_image():
@@ -37,6 +42,6 @@ def classify_image():
         return render_template("upload.html", image_path = filename, prediction = 'Prediction: '+prediction)
     return render_template("upload.html", image_path = 'landing_page_pic.jpg')
 
+
 if __name__ == '__main__':
-    resnet_model = ResNet50(weights='imagenet')
-    app.run(host='0.0.0.0', debug=False, threaded=False, port=8000)
+    app.run(host='127.0.0.1', port=8000)

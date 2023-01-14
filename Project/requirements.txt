@@ -1,5 +1,6 @@
-tensorflow
-Keras
-Flask
-Pillow
+flask
+keras
 numpy
+opencv-python
+Pillow
+tensorflow-gpu
