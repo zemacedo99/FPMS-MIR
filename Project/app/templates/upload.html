@@ -8,30 +8,49 @@
     </head>
     <body>
 
-
-
-        <p><h1>
-            <i class="material-icons md-48">
-            image_search
-            </i>
-            Multimedia Search
-        </h1></p>
-
-       
-        <form action="mir" method="POST" enctype="multipart/form-data">
-            <input type="file" id="file" name="input_file" accept="image/*"/>
-            <label for="file">
-                <i class="material-icons">
-                    add_photo_alternate
+        <div id = "project_name">
+            <p><h1>
+                <i class="material-icons md-48">
+                    image_search
                 </i>
-                Upload an image
-            </label>
+                Multimedia Search
+            </h1></p>
+        </div>
+            
+        <div id = 'query_image'>
+            <img src="{{ url_for('static', filename=image_path) }}" alt="Image">
+        </div>
+    
+        <form action="mir" method="POST" enctype="multipart/form-data">
+
+            <div id="upload_img">
+                <input type="file" id="file" name="input_file" accept="image/*"/>
+                <label for="file">
+                    <i class="material-icons">
+                        add_photo_alternate
+                    </i>
+                    Upload an image
+                </label>
+            </div>
+            
+            <div id = 'descriptors'>
+                <input type="checkbox" name="checkBox_name" value="checkBox_HistC">BGR<br>
+                <input type="checkbox" name="checkBox_name" value="checkBox_HSV">HSV<br>
+                <input type="checkbox" name="checkBox_name" value="checkBox_SIFT">SIFT<br>
+                <input type="checkbox" name="checkBox_name" value="checkBox_ORB">ORB<br>
+                <input type="checkbox" name="checkBox_name" value="checkBox_GLCM">GLCM<br>
+                <input type="checkbox" name="checkBox_name" value="checkBox_LBP">LBP<br>
+                <input type="checkbox" name="checkBox_name" value="checkBox_HOG">HOG<br>
+            </div>
+
+            <div id = 'top'> 
+                <label for="number">Top:</label>
+                <input type="number" id="number" name="number" min="5" max="100" step="1">
+            </div>
+            
             <button id='descripteur' type="submit">Select descriptor</button>
         </form>
 
-        <div style="text-align: center">
-            <img src="{{ url_for('static', filename=image_path) }}" alt="Imagee">
-        </div>
-    
+
     </body>
 </html>
