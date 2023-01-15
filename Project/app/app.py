@@ -69,7 +69,7 @@ def loadfunction():
         # print("top", top)
         
         loadFeatures()
-        return render_template('result.html', image_path = filename, imgs=imgs)
+        return render_template('result.html', image_path = filename, imgs=imgs, top=top)
 
 def loadFeatures():            
 

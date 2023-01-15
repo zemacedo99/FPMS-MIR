@@ -21,10 +21,18 @@
         <form id = "goback" action="homepage" method="get">
             <input type="submit" value="Go Back">
         </form>
+
+        <h1>
+            Query image:
+        </h1>
             
         <div id = 'query_image'>
             <img src="{{ url_for('static', filename=image_path) }}" alt="Image">
         </div>
+
+        <h1>
+            Top {{top}} images:
+        </h1>
 
         {% for img in imgs %}
             <img id = "result_img" src="data:image/jpeg;base64,{{ img }}" alt="Image">

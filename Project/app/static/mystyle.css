@@ -149,6 +149,8 @@ img {
 
 #goback {
   text-align: center;
-  margin-top: 50px;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
