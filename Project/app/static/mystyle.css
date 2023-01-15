@@ -57,6 +57,7 @@ input[type="checkbox"] {
 img {
   width: 50%;
   /* margin-top: 20px; */
+  margin-bottom: 20px;
   border: 1px solid #5c5c5c;
 }
 
@@ -143,5 +144,11 @@ img {
   margin: 10px;
   text-align: center;
   border: 2px solid black;
+}
+
+
+#goback {
+  text-align: center;
+  margin-top: 50px;
 }
 

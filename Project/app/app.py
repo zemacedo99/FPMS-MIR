@@ -26,9 +26,13 @@ path_image_plus_proches = []
 nom_image_plus_proches = []
 imgs = []
 
-@app.route("/",methods=["GET","POST"])
+@app.route("/")
 def homepage():
-    return render_template("upload.html", image_path="landing_page_pic.jpg")
+    return render_template("upload.html")
+
+@app.route("/homepage",methods=["GET"])
+def homepage1():
+    return render_template("upload.html")
 
 
 @app.route("/load",methods=["GET","POST"])
@@ -81,6 +85,7 @@ def loadFeatures():
             
 def Recherche():
     global filename
+    global imgs
     voisins=""
     
     if descripteurs_names != []:
@@ -101,10 +106,8 @@ def Recherche():
             #Générer les voisins
             voisins=getkVoisins(features, req, top, distanceName )
             
-
+        imgs = []
         for k in range(int(top)):
-            print(top)
-            print(k)
             path_image_plus_proches.append(voisins[k][0])
             nom_image_plus_proches.append(os.path.basename(voisins[k][0]))
             
