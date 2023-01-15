@@ -219,6 +219,6 @@ def extractReqFeatures(fileName,descripteur_name):
 
 			
         np.savetxt("Methode_"+descripteur_name+"_requete.txt" ,vect_features)
-        print("saved")
+        # print("saved")
         #print("vect_features", vect_features)
         return vect_features

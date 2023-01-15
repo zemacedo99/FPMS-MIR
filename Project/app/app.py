@@ -39,6 +39,8 @@ def homepage1():
 def loadfunction():
     if request.method == "POST":
         global filename
+        global descripteurs_names
+        global distances_names
         
         #read and upload resized files to folder
         image = request.files['input_file']
@@ -50,6 +52,8 @@ def loadfunction():
     
         checked_boxes = request.form.getlist('checkBox_name')
         
+        distances_names = []
+        descripteurs_names = []
         for checked_box in checked_boxes:
             distance_name = checked_box.replace("checkBox", "dropdown")
             descripteur_name = checked_box.replace("checkBox_", "")
@@ -69,6 +73,9 @@ def loadfunction():
 
 def loadFeatures():            
 
+    global features
+    features = []
+    
     for descripteur_name in descripteurs_names:
         model_path = os.path.join(os.path.dirname(APP_ROOT), descripteur_name)
         
@@ -85,7 +92,11 @@ def loadFeatures():
             
 def Recherche():
     global filename
+    global distanceName
     global imgs
+    global path_image_plus_proches
+    global nom_image_plus_proches
+    
     voisins=""
     
     if descripteurs_names != []:
@@ -107,6 +118,9 @@ def Recherche():
             voisins=getkVoisins(features, req, top, distanceName )
             
         imgs = []
+        path_image_plus_proches = []
+        nom_image_plus_proches =[]
+        
         for k in range(int(top)):
             path_image_plus_proches.append(voisins[k][0])
             nom_image_plus_proches.append(os.path.basename(voisins[k][0]))
