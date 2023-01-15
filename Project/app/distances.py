@@ -1,7 +1,6 @@
 import numpy as np
 import math
 import cv2
-from sklearn.metrics.pairwise import euclidean_distances
 import numpy as np
 from skimage import feature
 from matplotlib import pyplot as plt
@@ -83,6 +82,6 @@ def getkVoisins(lfeatures, req, k,distanceName) :
     ldistances.sort(key=operator.itemgetter(2),reverse=ordre) 
 
     lvoisins = [] 
-    for i in range(k): 
+    for i in range(int(k)): 
         lvoisins.append(ldistances[i]) 
     return lvoisins

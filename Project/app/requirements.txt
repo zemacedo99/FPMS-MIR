@@ -2,5 +2,7 @@ flask
 keras
 numpy
 opencv-python
+scikit-image
+matplotlib
 Pillow
 tensorflow-gpu

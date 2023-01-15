@@ -1,5 +1,3 @@
-#Defintion de toute les fonctions à appeller dans l'interface
-from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QMessageBox
 import os
 import cv2
 import numpy as np
@@ -159,36 +157,36 @@ def generateHOG(filenames, progressBar):
     print("indexation HOG terminée !!!!")
 
 
-def extractReqFeatures(fileName,algo_choice):  
-    print(algo_choice)
-    if fileName : 
+def extractReqFeatures(fileName,descripteur_name):  
+    # print(descripteur_name)
+    if fileName: 
         img = cv2.imread(fileName)
         resized_img = resize(img, (128*4, 64*4))
             
-        if algo_choice==1: #Couleurs
+        if descripteur_name=="BGR": #Couleurs
             histB = cv2.calcHist([img],[0],None,[256],[0,256])
             histG = cv2.calcHist([img],[1],None,[256],[0,256])
             histR = cv2.calcHist([img],[2],None,[256],[0,256])
             vect_features = np.concatenate((histB, np.concatenate((histG,histR),axis=None)),axis=None)
         
-        elif algo_choice==2: # Histo HSV
+        elif descripteur_name=="HSV": # Histo HSV
             hsv = cv2.cvtColor(img,cv2.COLOR_BGR2HSV)
             histH = cv2.calcHist([hsv],[0],None,[256],[0,256])
             histS = cv2.calcHist([hsv],[1],None,[256],[0,256])
             histV = cv2.calcHist([hsv],[2],None,[256],[0,256])
             vect_features = np.concatenate((histH, np.concatenate((histS,histV),axis=None)),axis=None)
 
-        elif algo_choice==3: #SIFT
+        elif descripteur_name=="SIFT": #SIFT
             sift = cv2.SIFT_create() #cv2.xfeatures2d.SIFT_create() pour py < 3.4 
             # Find the key point
             kps , vect_features = sift.detectAndCompute(img,None)
     
-        elif algo_choice==4: #ORB
+        elif descripteur_name=="ORB": #ORB
             orb = cv2.ORB_create()
             # finding key points and descriptors of both images using detectAndCompute() function
             key_point1,vect_features = orb.detectAndCompute(img,None)
                         
-        elif algo_choice==5: #GLCM
+        elif descripteur_name=="GLCM": #GLCM
             gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
             gray = img_as_ubyte(gray)
             glcm = greycomatrix(gray, distances=[1,-1], angles=[0, np.pi/4, np.pi/2, 3*np.pi/4], normed=True)
@@ -200,7 +198,7 @@ def extractReqFeatures(fileName,algo_choice):
             glcmProperties6 = greycoprops(glcm,'ASM').ravel()
             vect_features = np.array([glcmProperties1,glcmProperties2,glcmProperties3,glcmProperties4,glcmProperties5,glcmProperties6]).ravel()
             
-        elif algo_choice==6: #LBP
+        elif descripteur_name=="LBP": #LBP
             points=8
             radius=1
             method='default'
@@ -210,7 +208,7 @@ def extractReqFeatures(fileName,algo_choice):
             lbp_features = fullLBPmatrix.tolist()
             vect_features = np.array(lbp_features)
             
-        elif algo_choice==7: #HOG
+        elif descripteur_name=="HOG": #HOG
             cellSize = (25,25)
             blockSize = (50,50)
             blockStride = (25,25)
@@ -220,7 +218,7 @@ def extractReqFeatures(fileName,algo_choice):
             vect_features = hog.compute(img)
 
 			
-        np.savetxt("Methode_"+str(algo_choice)+"_requete.txt" ,vect_features)
+        np.savetxt("Methode_"+descripteur_name+"_requete.txt" ,vect_features)
         print("saved")
         #print("vect_features", vect_features)
         return vect_features
