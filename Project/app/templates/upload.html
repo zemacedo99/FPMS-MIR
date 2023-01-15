@@ -34,7 +34,7 @@
                 </label>
             </div>
             
-            <div id = 'descriptors'>
+            <div id = 'descriptors' class = "distances_dropdowns">
                 <input type="checkbox" id="checkBox_BGR" name="checkBox_name" value="checkBox_BGR" onchange="showDropdown(this.id)">BGR<br>
                 <input type="checkbox" id="checkBox_HSV" name="checkBox_name" value="checkBox_HSV" onchange="showDropdown(this.id)">HSV<br>
                 <input type="checkbox" id="checkBox_SIFT" name="checkBox_name" value="checkBox_SIFT" onchange="showDropdown(this.id)">SIFT<br>
@@ -44,60 +44,84 @@
                 <input type="checkbox" id="checkBox_HOG" name="checkBox_name" value="checkBox_HOG" onchange="showDropdown(this.id)">HOG<br>
             </div>
 
-            <select id="dropdown_BGR" name="dropdown_BGR" style="display:none">
-                <option value="Euclidienne" selected>Euclidienne</option>
-                <option value="Correlation">Correlation</option>
-                <option value="Chicarre">Chicarre</option>
-                <option value="Intersection">Intersection</option>
-                <option value="Bhattacharyya">Bhattacharyya</option>
-            </select>
+            <div class = "distances_dropdowns">
+                
+                <div id="dropdown_BGR" style="display:none">
+                    <label for="dropdown_BGR">BGR:</label>
+                    <select name="dropdown_BGR" >
+                        <option value="Euclidienne" selected>Euclidienne</option>
+                        <option value="Correlation">Correlation</option>
+                        <option value="Chicarre">Chicarre</option>
+                        <option value="Intersection">Intersection</option>
+                        <option value="Bhattacharyya">Bhattacharyya</option>
+                    </select>
+                </div>
 
-            <select id="dropdown_HSV" name="dropdown_HSV" style="display:none">
-                <option value="Euclidienne" selected>Euclidienne</option>
-                <option value="Correlation">Correlation</option>
-                <option value="Chicarre">Chicarre</option>
-                <option value="Intersection">Intersection</option>
-                <option value="Bhattacharyya">Bhattacharyya</option>
-            </select>
+                <div id="dropdown_HSV" style="display:none">
+                    <label for="dropdown_HSV">HSV:</label>
+                    <select name="dropdown_HSV" >
+                        <option value="Euclidienne" selected>Euclidienne</option>
+                        <option value="Correlation">Correlation</option>
+                        <option value="Chicarre">Chicarre</option>
+                        <option value="Intersection">Intersection</option>
+                        <option value="Bhattacharyya">Bhattacharyya</option>
+                    </select>
+                </div>
+                
+                <div id="dropdown_SIFT" style="display:none">
+                    <label for="dropdown_SIFT">SIFT:</label>
+                    <select  name="dropdown_SIFT">
+                        <option value="Brute_force" selected>Brute force</option>
+                        <option value="Flann">Flann</option>
+                    </select>
+                </div>
 
-            <select id="dropdown_GLCM" name="dropdown_GLCM" style="display:none">
-                <option value="Euclidienne" selected>Euclidienne</option>
-                <option value="Correlation">Correlation</option>
-                <option value="Chicarre">Chicarre</option>
-                <option value="Intersection">Intersection</option>
-                <option value="Bhattacharyya">Bhattacharyya</option>
-            </select>
+                <div id="dropdown_ORB" style="display:none">
+                    <label for="dropdown_ORB">ORB:</label>
+                    <select  name="dropdown_ORB">
+                        <option value="Brute_force" selected>Brute force</option>
+                        <option value="Flann">Flann</option>
+                    </select>
+                </div>
 
-            <select id="dropdown_HOG" name="dropdown_HOG" style="display:none">
-                <option value="Euclidienne" selected>Euclidienne</option>
-                <option value="Correlation">Correlation</option>
-                <option value="Chicarre">Chicarre</option>
-                <option value="Intersection">Intersection</option>
-                <option value="Bhattacharyya">Bhattacharyya</option>
-            </select>
+                <div id="dropdown_GLCM" style="display:none">
+                    <label for="dropdown_GLCM">GLCM:</label>
+                    <select name="dropdown_GLCM" >
+                        <option value="Euclidienne" selected>Euclidienne</option>
+                        <option value="Correlation">Correlation</option>
+                        <option value="Chicarre">Chicarre</option>
+                        <option value="Intersection">Intersection</option>
+                        <option value="Bhattacharyya">Bhattacharyya</option>
+                    </select>
+                </div>
 
-            <select id="dropdown_HOG" name="dropdown_HOG" style="display:none">
-                <option value="Euclidienne" selected>Euclidienne</option>
-                <option value="Correlation">Correlation</option>
-                <option value="Chicarre">Chicarre</option>
-                <option value="Intersection">Intersection</option>
-                <option value="Bhattacharyya">Bhattacharyya</option>
-            </select>
+                <div id="dropdown_LBP" style="display:none">
+                    <label for="dropdown_LBP">LBP:</label>
+                    <select name="dropdown_LBP" >
+                        <option value="Euclidienne" selected>Euclidienne</option>
+                        <option value="Correlation">Correlation</option>
+                        <option value="Chicarre">Chicarre</option>
+                        <option value="Intersection">Intersection</option>
+                        <option value="Bhattacharyya">Bhattacharyya</option>
+                    </select>
+                </div>
 
-  
-            <select id="dropdown_SIFT" name="dropdown_SIFT" style="display:none">
-                <option value="Brute_force" selected>Brute force</option>
-                <option value="Flann">Flann</option>
-            </select>
-     
-          
-            <select id="dropdown_ORB" name="dropdown_ORB" style="display:none">
-                <option value="Brute_force" selected>Brute force</option>
-                <option value="Flann">Flann</option>
-            </select>
-        
+                <div id="dropdown_HOG" style="display:none">
+                    <label for="dropdown_HOG">HOG:</label>
+                    <select name="dropdown_HOG" >
+                        <option value="Euclidienne" selected>Euclidienne</option>
+                        <option value="Correlation">Correlation</option>
+                        <option value="Chicarre">Chicarre</option>
+                        <option value="Intersection">Intersection</option>
+                        <option value="Bhattacharyya">Bhattacharyya</option>
+                    </select>
+                </div>
+                        
+            </div>
+                        
+                        
             <div id = 'top'> 
-                <label for="number">Top:</label>
+                            <label for="number">Top:</label>
                 <input type="number" id="number" name="number" min="5" max="100" step="1" value="20">
             </div>
             

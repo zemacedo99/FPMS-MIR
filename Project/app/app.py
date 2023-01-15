@@ -25,6 +25,7 @@ features = []
 path_image_plus_proches = []
 nom_image_plus_proches = []
 imgs = []
+RPgraph = ""
 
 @app.route("/")
 def homepage():
@@ -68,7 +69,9 @@ def loadfunction():
         top = request.form.get("number")
         # print("top", top)
         
-        loadFeatures()
+        loadFeatures()           
+        Recherche()
+        rappel_precision()
         return render_template('result.html', image_path = filename, imgs=imgs, top=top)
 
 def loadFeatures():            
@@ -86,8 +89,7 @@ def loadFeatures():
                 continue
             feature = np.loadtxt(data)
             features.append((os.path.join(filenames,os.path.basename(data).split('.')[0]+'.jpg'),feature))
-            
-    Recherche()
+
  
             
 def Recherche():
@@ -140,5 +142,82 @@ def Recherche():
     else :
         print("Il faut choisir une méthode !")
 
+
+def rappel_precision():
+        rappel_precision=[]
+        rappels=[]
+        precisions=[]
+        average_precisions = []
+        global RPgraph
+
+        filename_parts = fileName.split("_")
+        num_image = filename_parts[-1].split(".")[0]
+        
+        image_folder = filename_parts[3]
+        image_sub_folder = filename_parts[4]
+        
+        classe_image_requete = image_folder
+        val =0
+
+        for j in range(self.sortie):
+            filename_parts = self.nom_image_plus_proches[j].split('_')
+            print(filename_parts)
+            image_folder = filename_parts[2]
+            classe_image_proche = image_folder
+            # print("classe_image_proche", classe_image_proche)
+            if classe_image_requete==classe_image_proche:
+                rappel_precision.append(True) #Bonne classe (pertinant)
+                val += 1
+            else:
+                rappel_precision.append(False) #Mauvaise classe (non pertinant)
+                
+        for i in range(self.sortie):
+            j=i
+            val=0
+            while(j>=0):
+                if rappel_precision[j]:
+                    val+=1
+                j-=1
+            precision = val/(i+1)
+            rappel = val/top
+            rappels.append(rappel)
+            precisions.append(precision)
+            
+        precisions = np.asarray(precisions)
+        rappels = np.asarray(rappels)
+        average_precision = np.trapz(precisions, x=rappels)  
+
+        #Création de la courbe R/P
+        plt.plot(rappels,precisions)
+        # plt.plot(rappels, average_precisions, 'g--', label='average precision')
+        plt.xlabel("Recall")
+        plt.ylabel("Precision")
+        plt.title("R/P"+str(top)+" voisins de l'image n°"+num_image)
+
+
+        val = np.cumsum(rappel_precision)
+        precision = val / np.arange(1, top+1)
+        rappel = val / top
+
+        # Print the precision and recall
+        print("Precision:", precision)
+        print("Recall:", rappel)
+        print("average_precision", average_precision)
+
+        
+        #Enregistrement de la courbe RP
+        save_folder=os.path.join(".",num_image)
+        if not os.path.exists(save_folder):
+            os.makedirs(save_folder)
+        save_name=os.path.join(save_folder,num_image+'.png')
+        plt.savefig(save_name,format='png',dpi=600)
+        plt.close()
+
+        #Affichage de la courbe R/P
+        img = cv2.imread(save_name,1) #load image in color
+        ret, buffer = cv2.imencode('.jpg', img)
+        RPgraph = base64.b64encode(buffer).decode()
+        
+        
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=8000)
