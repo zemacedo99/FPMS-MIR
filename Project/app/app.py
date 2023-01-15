@@ -153,20 +153,21 @@ def rappel_precision():
         filename_path = os.path.join(APP_ROOT, 'static')
         fileName = os.path.join(filename_path, filename)
         filename_parts = fileName.split("_")
+
         num_image = filename_parts[-1].split(".")[0]
         
-        image_folder = filename_parts[3]
-        image_sub_folder = filename_parts[4]
+        image_folder = filename_parts[2]
         
         classe_image_requete = image_folder
         val =0
 
         for j in range(int(top)):
             filename_parts = nom_image_plus_proches[j].split('_')
-            print(filename_parts)
+            # print(filename_parts)
             image_folder = filename_parts[2]
             classe_image_proche = image_folder
             # print("classe_image_proche", classe_image_proche)
+            # print("classe_image_requete", classe_image_requete)
             if classe_image_requete==classe_image_proche:
                 rappel_precision.append(True) #Bonne classe (pertinant)
                 val += 1
