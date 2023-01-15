@@ -1,0 +1,136 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f2f2f2;
+  text-align: center;
+}
+
+h1 {
+  color: #5c5c5c;
+  text-align: center;
+  margin: 20px 0;
+}
+
+.material-icons {
+  font-size: 48px;
+  color: #5c5c5c;
+}
+
+form {
+  margin: 30px auto;
+  width: 400px;
+  text-align: left;
+}
+
+#file {
+  display: none;
+}
+
+label {
+  font-size: 18px;
+  color: #5c5c5c;
+  cursor: pointer;
+}
+
+label i {
+  font-size: 36px;
+  margin-right: 10px;
+}
+
+input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+#number {
+  width: 50px;
+  margin-left: 10px;
+}
+
+#descripteur {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+img {
+  width: 50%;
+  margin-top: 20px;
+  border: 1px solid #5c5c5c;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, auto);
+  grid-gap: 10px;
+  padding: 10px;
+}
+
+#query_image, #upload_img, #descriptors, #top, #descripteur{
+  grid-column: span 2;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+#descriptors {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+#descripteur {
+  display: flex;
+  margin: auto;
+}
+
+#query_image {
+  display: flex;
+  margin: auto;
+  width: 300px;
+  height: 300px;
+}
+
+#query_image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+#upload_img input[type='file'] {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+#upload_img label {
+  cursor: pointer;
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 18px;
+  color: #fff;
+  background-color: #333;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+#upload_img label i.material-icons {
+  vertical-align: middle;
+  margin-right: 10px;
+}
+
+#upload_img label:hover {
+  background-color: #444;
+}
+
+#upload_img input[type='file']:focus + label {
+  background-color: #555;
+}
+
+#upload_img input[type='file']:valid + label {
+  background-color: #5cb85c;
+  color: #fff;
+}
