@@ -5,6 +5,7 @@ import numpy as np
 # from keras.preprocessing.image import load_img, img_to_array
 import os
 from PIL import Image
+import base64
 from functions import extractReqFeatures, generateSIFT, generateHistogramme_HSV, generateHistogramme_Color, generateORB
 from distances import *
 
@@ -21,9 +22,17 @@ top = 20
 descripteurs_names = []
 distances_names = []
 features = []
+path_image_plus_proches = []
+nom_image_plus_proches = []
+imgs = []
 
-@app.route("/mir",methods=["GET","POST"])
-def mir():
+@app.route("/",methods=["GET","POST"])
+def homepage():
+    return render_template("upload.html", image_path="landing_page_pic.jpg")
+
+
+@app.route("/load",methods=["GET","POST"])
+def loadfunction():
     if request.method == "POST":
         global filename
         
@@ -52,18 +61,7 @@ def mir():
         # print("top", top)
         
         loadFeatures()
-        #classify image
-        # image = load_img(image, target_size=(224, 224))
-        # image = img_to_array(image)
-        # image = np.expand_dims(image, axis=0)
-        # image = preprocess_input(image)
-        # prediction = resnet_model.predict(image)
-        # prediction = decode_predictions(prediction)[0][0][1]
-        # prediction = prediction.replace('_',' ')
-        
-        #display prediction and image
-        return render_template("upload.html", image_path = filename)
-    return render_template("upload.html", image_path="landing_page_pic.jpg")
+        return render_template('result.html', image_path = filename, imgs=imgs)
 
 def loadFeatures():            
 
@@ -81,7 +79,6 @@ def loadFeatures():
     Recherche()
  
             
-            
 def Recherche():
     global filename
     voisins=""
@@ -89,8 +86,8 @@ def Recherche():
     if descripteurs_names != []:
         
         for i,descripteur_name in enumerate(descripteurs_names):  
-            print(descripteur_name)
-            print(i)
+            # print(descripteur_name)
+            # print(i)
             ##Generer les features de l'images requete
             filename_path = os.path.join(APP_ROOT, 'static')
             fileName = os.path.join(filename_path, filename)
@@ -103,45 +100,26 @@ def Recherche():
         
             #Générer les voisins
             voisins=getkVoisins(features, req, top, distanceName )
-
-        # self.path_image_plus_proches = []
-        # self.nom_image_plus_proches = []
-        # for k in range(top):
-        #     self.path_image_plus_proches.append(voisins[k][0])
-        #     self.nom_image_plus_proches.append(os.path.basename(voisins[k][0]))
             
-        # #Nombre de colonnes pour l'affichage
-        # if top <= 10:
-        #     col=3
-        # elif top <= 20:
-        #     col = 5
-        # else:
-        #     col = 10
-            
-        # k=0
-        # for i in range(math.ceil(top/col)):
-        #     for j in range(col):
-        #         if os.path.exists(self.path_image_plus_proches[k]):
-        #             img = cv2.imread(self.path_image_plus_proches[k],1) #load image
-        #         else:
-        #             print("Image not found: ", self.path_image_plus_proches[k])
-                    
-        #         #Remise de l'image en RGB pour l'afficher correctement
-        #         b,g,r = cv2.split(img) # get b,g,r
-        #         img = cv2.merge([r,g,b]) # switch it to rgb
-        #         #convert image to QImage
-        #         height, width, channel = img.shape
-        #         bytesPerLine = 3 * width
-        #         qImg = QtGui.QImage(img.data, width, height, bytesPerLine,
-        #         QtGui.QImage.Format_RGB888)
 
-        #         pixmap=QtGui.QPixmap.fromImage(qImg)
-        #         label = QtWidgets.QLabel("")
-        #         label.setAlignment(QtCore.Qt.AlignCenter)
-        #         label.setPixmap(pixmap.scaled(0.3*width, 0.3*height,
-        #         QtCore.Qt.KeepAspectRatio,QtCore.Qt.SmoothTransformation))
-        #         self.gridLayout.addWidget(label, i, j)
-        #         k+=1
+        for k in range(int(top)):
+            print(top)
+            print(k)
+            path_image_plus_proches.append(voisins[k][0])
+            nom_image_plus_proches.append(os.path.basename(voisins[k][0]))
+            
+            image_path = os.path.join(os.path.dirname(APP_ROOT), path_image_plus_proches[k])
+            # print("image_path")
+            # print(image_path)
+
+            if os.path.exists(image_path):
+                img = cv2.imread(image_path,1) #load image
+                ret, buffer = cv2.imencode('.jpg', img)
+                img_base64 = base64.b64encode(buffer).decode()
+                imgs.append(img_base64)
+            else:
+                print("Image not found: ", path_image_plus_proches[k])
+            
     else :
         print("Il faut choisir une méthode !")
 
