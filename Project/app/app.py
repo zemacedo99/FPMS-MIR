@@ -5,6 +5,8 @@ import numpy as np
 # from keras.preprocessing.image import load_img, img_to_array
 import os
 from PIL import Image
+from functions import extractReqFeatures, showDialog, generateSIFT, generateHistogramme_HSV, generateHistogramme_Color, generateORB
+from distances import *
 
 app = Flask(__name__, static_folder='static')
 
@@ -13,6 +15,10 @@ APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 app.config['IMAGE_UPLOADS'] = os.path.join(APP_ROOT, 'static')
 
 filenames= "MIR_DATASETS_B"
+
+descripteurs_names = []
+distances_names = []
+image_features = []
 
 @app.route("/mir",methods=["GET","POST"])
 def mir():
@@ -25,14 +31,23 @@ def mir():
         image_pil = Image.open(image)
         image_pil.thumbnail((600,300), Image.ANTIALIAS)
         image_pil.save(file_path)
-        
     
         checked_boxes = request.form.getlist('checkBox_name')
-        print("checked_boxes")
-        print(checked_boxes)
+        
+        for checked_box in checked_boxes:
+            distance_name = checked_box.replace("checkBox", "dropdown")
+            descripteur_name = checked_box.replace("checkBox_", "")
+            distance = request.form[distance_name]
+            distances_names.append(distance)
+            descripteurs_names.append(descripteur_name)
+            
+        print(distances_names)
+        print(descripteurs_names)
         
         number = request.form.get("number")
         print("top", number)
+        
+        loadFeatures()
         #classify image
         # image = load_img(image, target_size=(224, 224))
         # image = img_to_array(image)
@@ -46,75 +61,26 @@ def mir():
         return render_template("upload.html", image_path = filename)
     return render_template("upload.html", image_path="landing_page_pic.jpg")
 
-def loadFeatures():
-        folder_model=""
+def loadFeatures():            
+
+    for descripteur_name in descripteurs_names:
+        model_path = os.path.join(os.path.dirname(APP_ROOT), descripteur_name)
         
-        if checkBox_HistC.isChecked():
-            folder_model = './BGR'
-            algo_choice=1
-            
-        if checkBox_HSV.isChecked():
-            folder_model = './HSV'
-            algo_choice=2
-            
-        if checkBox_SIFT.isChecked():
-            folder_model = './SIFT'
-            algo_choice=3
-            
-        if checkBox_ORB.isChecked():
-            folder_model = './ORB'
-            algo_choice=4
-                        
-        if checkBox_GLCM.isChecked():
-            folder_model = './GLCM'
-            algo_choice=5
-                                
-        if checkBox_LBP.isChecked():
-            folder_model = './LBP'
-            algo_choice=6
-                                    
-        if checkBox_HOG.isChecked():
-            folder_model = './HOG'
-            algo_choice=7
-            
-            
-        # if filenames:
-        #     if algo_choice==3 or algo_choice==4:
-        #         comboBox.clear()
-        #         comboBox.addItems(["Brute force","Flann"])
-        #     else :
-        #         comboBox.clear()
-        #         comboBox.addItems(["Euclidienne","Correlation","Chicarre","Intersection","Bhattacharyya"])
-                
-        if len(filenames)<1:
-            print("Merci de charger une image avec le bouton Ouvrir")
-            
-        ##Charger les features de la base de données.
-        self.features1 = []
-        pas=0
-        print("chargement de descripteurs en cours ...")
-        
-        for j in os.listdir(folder_model): #folder_model : dossier de features
-            data=os.path.join(folder_model,j)
+        for j in os.listdir(model_path):
+            data=os.path.join(model_path,j)
+            print(data)
             if not data.endswith(".txt"):
                 continue
             feature = np.loadtxt(data)
-            self.features1.append((os.path.join(filenames,os.path.basename(data).split('.')[0]+'.jpg'),feature))
-            pas += 1
-            self.progressBar.setValue(int(100*((pas+1)/1000)))
-            
-        if not self.checkBox_SIFT.isChecked() and not self.checkBox_HistC.isChecked() and not self.checkBox_HSV.isChecked() and not self.checkBox_ORB.isChecked() and not self.checkBox_GLCM.isChecked() and not self.checkBox_LBP.isChecked() and not self.checkBox_HOG.isChecked():
-            print("Merci de sélectionner au moins un descripteur dans le menu")
-            showDialog()
-        print("chargement des descripteurs terminé")
+            image_features.append((os.path.join(filenames,os.path.basename(data).split('.')[0]+'.jpg'),feature))
+ 
             
             
 def Recherche(self, MainWindow):
-    #Remise à 0 de la grille des voisins
-    for i in reversed(range(self.gridLayout.count())):
-        self.gridLayout.itemAt(i).widget().setParent(None)
+    
     voisins=""
-    if self.algo_choice !=0:
+    
+    if descripteurs_names != []:
         ##Generer les features de l'images requete
         req = extractReqFeatures(fileName, self.algo_choice)
         ##Definition du nombre de voisins
