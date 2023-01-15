@@ -5,6 +5,7 @@
         <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='mystyle.css') }}"/>
+        <script src="{{ url_for('static', filename='myscript.js') }}"></script>
     </head>
     <body>
 
@@ -34,13 +35,45 @@
             </div>
             
             <div id = 'descriptors'>
-                <input type="checkbox" name="checkBox_name" value="checkBox_HistC">BGR<br>
+                <input type="checkbox" id="checkBox_id" name="checkBox_name" value="checkBox_HistC" onchange="showDropdown()">BGR<br>
                 <input type="checkbox" name="checkBox_name" value="checkBox_HSV">HSV<br>
                 <input type="checkbox" name="checkBox_name" value="checkBox_SIFT">SIFT<br>
                 <input type="checkbox" name="checkBox_name" value="checkBox_ORB">ORB<br>
                 <input type="checkbox" name="checkBox_name" value="checkBox_GLCM">GLCM<br>
                 <input type="checkbox" name="checkBox_name" value="checkBox_LBP">LBP<br>
                 <input type="checkbox" name="checkBox_name" value="checkBox_HOG">HOG<br>
+            </div>
+
+            <select id="dropdown_BGR" style="display:none">
+                <option value="Euclidienne" selected>Euclidienne</option>
+                <option value="Correlation">Correlation</option>
+                <option value="Chicarre">Chicarre</option>
+                <option value="Intersection">Intersection</option>
+                <option value="Bhattacharyya">Bhattacharyya</option>
+            </select>
+            
+            <div id = 'distances_BGR'>
+                <select id="dropdown" style="display:none">
+                    <option value="Euclidienne" selected>Euclidienne</option>
+                    <option value="Correlation">Correlation</option>
+                    <option value="Chicarre">Chicarre</option>
+                    <option value="Intersection">Intersection</option>
+                    <option value="Bhattacharyya">Bhattacharyya</option>
+                </select>
+            </div>
+
+            <div id = 'distances_SIFT' style="display:none">
+                <select id="dropdown">
+                    <option value="Brute_force" selected>Brute force</option>
+                    <option value="Flann">Flann</option>
+                </select>
+            </div>
+          
+            <div id = 'distances_ORB' style="display:none">
+                <select id="dropdown">
+                    <option value="Brute_force" selected>Brute force</option>
+                    <option value="Flann">Flann</option>
+                </select>
             </div>
 
             <div id = 'top'> 
