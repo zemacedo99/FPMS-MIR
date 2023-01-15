@@ -72,7 +72,7 @@ def loadfunction():
         loadFeatures()           
         Recherche()
         rappel_precision()
-        return render_template('result.html', image_path = filename, imgs=imgs, top=top)
+        return render_template('result.html', image_path = filename, imgs=imgs, top=top, RPgraph=RPgraph)
 
 def loadFeatures():            
 
@@ -150,6 +150,8 @@ def rappel_precision():
         average_precisions = []
         global RPgraph
 
+        filename_path = os.path.join(APP_ROOT, 'static')
+        fileName = os.path.join(filename_path, filename)
         filename_parts = fileName.split("_")
         num_image = filename_parts[-1].split(".")[0]
         
@@ -159,8 +161,8 @@ def rappel_precision():
         classe_image_requete = image_folder
         val =0
 
-        for j in range(self.sortie):
-            filename_parts = self.nom_image_plus_proches[j].split('_')
+        for j in range(int(top)):
+            filename_parts = nom_image_plus_proches[j].split('_')
             print(filename_parts)
             image_folder = filename_parts[2]
             classe_image_proche = image_folder
@@ -171,7 +173,7 @@ def rappel_precision():
             else:
                 rappel_precision.append(False) #Mauvaise classe (non pertinant)
                 
-        for i in range(self.sortie):
+        for i in range(int(top)):
             j=i
             val=0
             while(j>=0):
@@ -179,7 +181,7 @@ def rappel_precision():
                     val+=1
                 j-=1
             precision = val/(i+1)
-            rappel = val/top
+            rappel = val/int(top)
             rappels.append(rappel)
             precisions.append(precision)
             
@@ -196,8 +198,8 @@ def rappel_precision():
 
 
         val = np.cumsum(rappel_precision)
-        precision = val / np.arange(1, top+1)
-        rappel = val / top
+        precision = val / np.arange(1, int(top)+1)
+        rappel = val / int(top)
 
         # Print the precision and recall
         print("Precision:", precision)
