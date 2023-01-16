@@ -152,7 +152,6 @@ cython_debug/
 #.idea/
 
 
-Project/MIR_DATASETS_B
 Project/test_img
 Project/Complement (manage image classes in subfolders)
 
